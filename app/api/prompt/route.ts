@@ -47,12 +47,15 @@ export async function POST(req: NextRequest) {
       const youtubeResponse = await fetch(youtubeSearchUrl);
       const youtubeData: any = await youtubeResponse.json();
 
+    
+
       const videos = youtubeData.items.map((item: any) => ({
         id: item.id.videoId,
         title: item.snippet.title,
         description: item.snippet.description,
         thumbnailUrl: item.snippet.thumbnails.medium.url,
         channelTitle: item.snippet.channelTitle,
+        
         channelId : item.snippet.channelId,
         publishedAt: item.snippet.publishedAt
       }));
