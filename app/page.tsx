@@ -1,9 +1,9 @@
-;
+import Frontpage from "@/components/Frontpage";
 
 export default function Home() {
   return (
     <>
-      Hello this is the default home page .tsx 
+      <Frontpage></Frontpage>
     </>
   );
 }

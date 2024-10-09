@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { prompt } = body;
+    console.log(prompt);
 
     // Step 1: Get multiple search queries from the LLM
     const recommendationPrompt = `Based on the user's interest in "${prompt}", return an array of 3-4 different but related search queries, each focusing on a different aspect or subtopic. Return only a JSON array, with no additional text. For example: ["advanced javascript tutorials", "javascript project ideas", "javascript best practices 2024", "javascript frameworks comparison"].`;
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
     // Step 5: Sort by views and return top 20
     const sortedVideos = videosWithStats
       .sort((a, b) => parseInt(b.views) - parseInt(a.views))
-      .slice(0, 20);
+      .slice(0, 30);
 
     return NextResponse.json({ 
       searchQueries,
