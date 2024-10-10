@@ -55,7 +55,6 @@ export async function POST(req: NextRequest) {
         description: item.snippet.description,
         thumbnailUrl: item.snippet.thumbnails.medium.url,
         channelTitle: item.snippet.channelTitle,
-        
         channelId : item.snippet.channelId,
         publishedAt: item.snippet.publishedAt
       }));

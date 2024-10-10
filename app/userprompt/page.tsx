@@ -16,7 +16,7 @@ interface Video{
     views: string;
 }
 
-
+//function to define the hooks 
 export default function Component() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loading , setLoading] = useState(false);
@@ -25,8 +25,8 @@ export default function Component() {
 
   const fetchData = async(prompt : string) =>{
     try{
-        
-        const response = await axios.post('/api/prompt' , {prompt});
+        //api request to backend that is connecting backend to frontend 
+        const response = await axios.post('/api/prompt' , {prompt} );
         setVideos(response.data.videos);
         console.log(response);
        
@@ -38,7 +38,7 @@ export default function Component() {
         setLoading(false);
     }
   }
-
+//handle search event
   const handleSearch = (e: React.FormEvent) => {
      e.preventDefault(); 
      setLoading(true);
@@ -92,6 +92,7 @@ export default function Component() {
 
   <div className="container mx-auto p-4">
   {videos && videos.length > 0 ? (
+    
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {videos.map((video) => (
         <VideoCard
@@ -101,8 +102,11 @@ export default function Component() {
           channelName={video.channelTitle}
           views={video.views}
         />
+        
       ))}
+      
     </div>
+    
   ) : (
     <div className="text-center text-gray-400">
       Try searching to see some results!
