@@ -132,7 +132,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import VideoCard from "@/components/VideoCard";
 import { Youtube, Search, Menu, Bell, User, LogOut } from "lucide-react";
-import { SignedIn, RedirectToSignIn, useClerk } from "@clerk/nextjs";
+import { SignedIn,SignedOut, RedirectToSignIn, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -261,9 +261,9 @@ export default function Component() {
         </div>
       </SignedIn>
 
-      {/* <SignedOut>
+      <SignedOut>
         <RedirectToSignIn />
-      </SignedOut> */}
+      </SignedOut>
     </div>
   );
 }
