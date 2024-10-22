@@ -3,6 +3,22 @@ import { NextResponse, NextRequest } from "next/server";
 interface RequestBody {
     videoIdArr: number[];
 }
+interface Video {
+    id: {
+      videoId: string;
+    };
+    snippet: {
+      title: string;
+      thumbnails: {
+        default: {
+          url: string;
+        };
+      };
+      channelTitle: string;
+      channelId: string;
+    };
+  }
+  
 
 const ytApiKey = process.env.YOUTUBE_API_KEY; 
 
@@ -29,7 +45,7 @@ export async function POST(req: NextRequest) {
         const data = await response.json();
 
         // Process the response
-        const videos = data.items.map((video: any) => ({
+        const videos = data.items.map((video: Video) => ({
             id: video.id,
             title: video.snippet.title,
             thumbnail: video.snippet.thumbnails.default.url, 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useParams , useRouter } from "next/navigation"
 import axios from "axios"
-import { ThumbsUp, MessageCircle, Share2, Flag, Search , ChevronDown, ChevronUp} from "lucide-react"
+import { ThumbsUp, MessageCircle, Share2, Flag,ChevronDown, ChevronUp} from "lucide-react"
 import { SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"

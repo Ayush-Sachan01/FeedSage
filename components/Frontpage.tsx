@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Button } from "@/components/ui/button";
-import { Youtube, Zap, Sparkles, ChevronRight, Menu, X, Loader2 } from "lucide-react";
-import { useAuth, RedirectToSignIn } from "@clerk/nextjs";
+import { Youtube, Menu, X, Loader2 } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
 
 export default function HomePage() {
   const { isSignedIn } = useAuth();

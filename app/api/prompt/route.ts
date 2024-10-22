@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import fetch from "node-fetch";
 import { db } from "@/lib/astraClient";
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-require("dotenv").config();
+import { GoogleGenerativeAI } from  "@google/generative-ai";
+import dotenv from 'dotenv';
+
+dotenv.config(); 
 
 interface YouTubeVideo {
   id: string;
@@ -14,8 +16,47 @@ interface YouTubeVideo {
   publishedAt: string;
 }
 
+interface YouTubeSearchResult {
+  items: {
+    id: { videoId: string };
+    snippet: {
+      title: string;
+      description: string;
+      thumbnails: { medium: { url: string } };
+      channelTitle: string;
+      channelId: string;
+      publishedAt: string;
+    };
+  }[];
+}
+
+interface YouTubeVideoItem {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    description: string;
+    thumbnails: {
+      medium: {
+        url: string;
+      };
+    };
+    channelTitle: string;
+    channelId: string;
+    publishedAt: string;
+  };
+}
+
+  
+
+const geminiApiKey = process.env.GEMINI_API_KEY;
+
+if (!geminiApiKey) {
+  throw new Error("GEMINI_API_KEY is not defined in the environment variables.");
+}
 // Initialize Google Gemini client once
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(geminiApiKey);
 const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
 
 async function embedding(text: string): Promise<number[]> {
@@ -48,13 +89,15 @@ export async function POST(req: NextRequest) {
     )}&key=${youtubeApiKey}&maxResults=10&type=video&relevanceLanguage=en&videoEmbeddable=true`;
 
     const youtubeResponse = await fetch(youtubeSearchUrl);
-    const youtubeData: any = await youtubeResponse.json();
+    
+    const youtubeData  = await (youtubeResponse.json()) as YouTubeSearchResult;
+
 
     if (!youtubeData.items || youtubeData.items.length === 0) {
       return NextResponse.json({ message: "No videos found for the given prompt" }, { status: 404 });
     }
 
-    const allVideos: YouTubeVideo[] = youtubeData.items.map((item: any) => ({
+    const allVideos: YouTubeVideo[] = youtubeData.items.map((item: YouTubeVideoItem) => ({
       id: item.id.videoId,
       title: item.snippet.title,
       description: item.snippet.description,

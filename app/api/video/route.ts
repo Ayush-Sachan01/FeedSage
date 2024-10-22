@@ -1,6 +1,21 @@
 import { NextResponse, NextRequest } from "next/server";
 import fetch from "node-fetch";
 
+interface YouTubeSearchResult {
+    items: {
+      id: { videoId: string };
+      snippet: {
+        title: string;
+        description: string;
+        thumbnails: { medium: { url: string } };
+        channelTitle: string;
+        channelId: string;
+        publishedAt: string;
+      };
+    }[];
+  }
+  
+
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
@@ -15,7 +30,7 @@ export async function GET(req: NextRequest) {
         // Fetch video details from YouTube Data API
         const videoUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${youtubeApiKey}`;
         const videoResponse = await fetch(videoUrl);
-        const videoData : any = await videoResponse.json();
+        const videoData  = await (videoResponse.json()) as YouTubeSearchResult;
 
         if (!videoData.items.length) {
             return NextResponse.json({ error: "Video not found" }, { status: 404 });

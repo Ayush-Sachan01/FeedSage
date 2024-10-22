@@ -44,7 +44,7 @@ export default function Component() {
       const userId = user.id;
       const response = await axios.post("/api/prompt", { prompt, userId });
 
-      const fetchedVideos: Video[] = response.data.videos.map((video: any) => ({
+      const fetchedVideos: Video[] = response.data.videos.map((video: Video) => ({
         id: video.id,
         title: video.title,
         description: video.description,
@@ -177,7 +177,7 @@ export default function Component() {
                 </Button>
               </Link>
               <p className="text-sm text-center text-muted-foreground">
-                Don't have an account?{" "}
+                Dont have an account?{" "}
                 <Link href="/sign-up" className="underline underline-offset-2 hover:text-primary">
                   Sign up
                 </Link>
