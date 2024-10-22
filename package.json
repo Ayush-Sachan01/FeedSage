@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.7.5",
+    "@datastax/astra-db-ts": "^1.5.0",
     "@google/generative-ai": "^0.21.0",
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@prisma/client": "^5.19.1",
@@ -20,10 +21,13 @@
     "class-variance-authority": "^0.7.0",
     "clerk": "^0.8.3",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.11.1",
+    "json2csv": "^6.0.0-alpha.2",
     "lucide-react": "^0.447.0",
     "next": "14.2.12",
     "node-fetch": "^3.3.2",
+    "openai": "^4.68.1",
     "react": "^18",
     "react-dom": "^18",
     "sentiment": "^5.0.2",
@@ -31,6 +35,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/json2csv": "^5.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
