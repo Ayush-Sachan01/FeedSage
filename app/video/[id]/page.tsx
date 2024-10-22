@@ -1,15 +1,16 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useParams , useRouter } from "next/navigation"
 import axios from "axios"
 import { ThumbsUp, MessageCircle, Share2, Flag, Search , ChevronDown, ChevronUp} from "lucide-react"
 import { SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import RecommendedVideos from "@/components/RecommendedVideos" // Adjust the import path as necessary
-// import SearchBar from "@/components/SearchBar" // Adjust the import path
+import RecommendedVideos from "@/components/RecommendedVideos"
+
 
 // Video and Comment interfaces
 interface Video {
@@ -21,14 +22,14 @@ interface Video {
   likes: string;
   videoUrl: string;
   thumbnailUrl: string;
-  publishedAt?: string; // Make sure this matches
+  publishedAt?: string; 
 }
 
 interface RecommendedVideo {
-  _id: string; // Add the _id property for the key
+  _id: string; 
   userId: string;
-  video: Video; // Use the same Video type here
-  createdAt: string; // If you need the created date
+  video: Video; 
+  createdAt: string; 
 }
 
 interface Comment {
@@ -47,13 +48,14 @@ const comments: Comment[] = [
 
 
 export default function VideoPage() {
-  const { id } = useParams(); // Video ID from the URL
-  const { user, isLoaded, isSignedIn } = useUser(); // Get user data from Clerk
+  const { id } = useParams(); 
+  const router = useRouter();
+  const { user, isLoaded, isSignedIn } = useUser(); 
   const [video, setVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [recommendedVideos, setRecommendedVideos] = useState<RecommendedVideo[]>([]);
-  const [filteredVideos, setFilteredVideos] = useState<RecommendedVideo[]>([]); // Store filtered videos
+ 
 
   // Fetch the video details
   useEffect(() => {
@@ -72,6 +74,9 @@ export default function VideoPage() {
     if (id) fetchVideo();
   }, [id]);
 
+  const handleSearchRedirect = () => {
+    router.push("/userprompt"); // Redirect to /userprompt
+  };
   // Fetch recommended videos
   useEffect(() => {
     const fetchRecommendedVideos = async () => {
@@ -85,7 +90,7 @@ export default function VideoPage() {
 
         const fetchedVideos = response.data.results;
         setRecommendedVideos(fetchedVideos);
-        setFilteredVideos(fetchedVideos); // Initialize filteredVideos with all videos
+        
       } catch (error) {
         console.error("Error fetching recommended videos:", error);
       }
@@ -94,14 +99,7 @@ export default function VideoPage() {
     fetchRecommendedVideos();
   }, [id, isLoaded, isSignedIn, user?.id]);
 
-  // Handle search queries
-  const handleSearch = (query: string) => {
-    const lowerCaseQuery = query.toLowerCase();
-    const filtered = recommendedVideos.filter((video) =>
-      video.video.title.toLowerCase().includes(lowerCaseQuery)
-    );
-    setFilteredVideos(filtered);
-  };
+ 
 
   if (loading) {
     return (
@@ -129,6 +127,16 @@ export default function VideoPage() {
   }
 
   return (
+    <>
+      <div className="bg-gray-900 mx-auto md:text-right text-center md:pt-8 md:pr-8 pb-4 pt-4">
+        <Button
+                variant="outline"
+                className="bg-gray-800 text-gray-200 hover:bg-gray-700"
+                onClick={handleSearchRedirect}
+              >
+                Go to Search
+        </Button>
+      </div>
     <div className="min-h-screen bg-gray-900 text-gray-200 md:flex md:justify-center">
       <div className="container mx-auto py-8 px-4 flex flex-col md:flex-row gap-6">
         <div className="md:w-2/3">
@@ -221,6 +229,7 @@ export default function VideoPage() {
         <RedirectToSignIn />
       </SignedOut>
     </div>
+    </>
   );
   
 }

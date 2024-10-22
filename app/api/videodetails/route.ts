@@ -4,8 +4,7 @@ interface RequestBody {
     videoIdArr: number[];
 }
 
-// Your YouTube API key
-const ytApiKey = process.env.YOUTUBE_API_KEY; // Make sure to store your API key in the .env file
+const ytApiKey = process.env.YOUTUBE_API_KEY; 
 
 export async function POST(req: NextRequest) {
     try {
