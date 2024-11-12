@@ -6,7 +6,6 @@ import { ThumbsUp, MessageCircle, Share2, Flag,ChevronDown, ChevronUp} from "luc
 import { SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import RecommendedVideos from "@/components/RecommendedVideos"
@@ -83,10 +82,14 @@ export default function VideoPage() {
       if (!id || !isLoaded || !isSignedIn || !user?.id) return;
 
       try {
+
         const response = await axios.post("/api/recommendation", {
           videoId: id,
           userId: user.id,
+
         });
+
+       
 
         const fetchedVideos = response.data.results;
         setRecommendedVideos(fetchedVideos);

@@ -176,6 +176,7 @@ export default function Component() {
                   Sign In
                 </Button>
               </Link>
+              
               <p className="text-sm text-center text-muted-foreground">
                 Dont have an account?{" "}
                 <Link href="/sign-up" className="underline underline-offset-2 hover:text-primary">

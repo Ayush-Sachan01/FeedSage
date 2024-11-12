@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     console.log("Currently Watching Video ID:", videoId);
     console.log("User ID:", userId);
 
-
+    
     const videoCollection = db.collection("videos");
     const currentVideo = await videoCollection.findOne({ "video.id": videoId },{projection :{$vector : 1}} );
     console.log(currentVideo);
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const currentEmbedding = currentVideo.$vector;
 
-    console.log(currentEmbedding);
+    
     // Step 3: Perform similarity search in Astra DB for recommendations
     
     const similarVideos = await videoCollection
@@ -39,6 +39,8 @@ export async function POST(req: NextRequest) {
         }
       )
       .toArray();
+      
+      console.log( "This is the similar video section " , similarVideos);
 
     return NextResponse.json({
       message: "Recommended similar videos",

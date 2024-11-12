@@ -44,6 +44,8 @@ interface VideoData {
     }>;
 }
 
+//check for database hibernation for database problems and unexpected error 404
+
 export async function POST(req: NextRequest) {
     const youtubeApiKey = process.env.YOUTUBE_API_KEY; // Ensure your API key is set in environment variables
 
