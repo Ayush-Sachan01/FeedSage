@@ -15,8 +15,8 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata = {
-  title: "FeedSage - Elevate Your YouTube Experience",
+export const metadata: Metadata = {
+  title: "FeedSage – Elevate Your YouTube Experience",
   description: "Harness the power of AI to curate your perfect YouTube feed.",
 };
 
