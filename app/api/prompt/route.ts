@@ -102,11 +102,11 @@ export async function POST(req: NextRequest) {
     // Fetch statistics (views)
     const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${youtubeApiKey}`;
     const statsResponse = await fetch(statsUrl);
-    const statsData = await statsResponse.json();
+    const statsData = await statsResponse.json() as { items: { id: string; statistics: { viewCount: string } }[] };
     
     // Build a map of videoId -> viewCount
     const statsMap = new Map(
-      statsData.items.map((item: any) => [item.id, item.statistics.viewCount])
+      statsData.items.map((item) => [item.id, item.statistics.viewCount])
     );
     
     // Merge search data + stats into allVideos

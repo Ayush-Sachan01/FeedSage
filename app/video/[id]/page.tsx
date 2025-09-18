@@ -4,7 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import {
   ThumbsUp,
-  MessageCircle,
   Share2,
   Flag,
   ChevronDown,
@@ -48,23 +47,6 @@ interface Comment {
   likes: number;
   time: string;
 }
-
-const comments: Comment[] = [
-  {
-    id: "1",
-    user: "User1",
-    text: "Great video!",
-    likes: 10,
-    time: "2 days ago",
-  },
-  {
-    id: "2",
-    user: "User2",
-    text: "Very informative, thanks for sharing!",
-    likes: 5,
-    time: "1 day ago",
-  },
-];
 
 export default function VideoPage() {
   const { id } = useParams();

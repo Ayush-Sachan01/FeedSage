@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import VideoCard from "@/components/VideoCard";
-import { Youtube, Search, Menu, Bell, User, LogOut } from "lucide-react";
+import { Youtube, Search, LogOut } from "lucide-react";
 import { SignedIn, SignedOut, useClerk, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
