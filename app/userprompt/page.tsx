@@ -87,11 +87,13 @@ export default function Component() {
         <nav className="bg-gray-800 py-2 px-4 md:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center">
-              <Button variant="ghost" size="icon" className="mr-2 text-gray-300 hover:text-white">
+              {/* <Button variant="ghost" size="icon" className="mr-2 text-gray-300 hover:text-white">
                 <Menu className="h-6 w-6" />
-              </Button>
-              <Youtube className="h-8 w-8 text-red-500 mr-2" />
-              <span className="text-xl font-bold">FeedSage</span>
+              </Button> */}
+              <Link href="/" className="flex items-center cursor-pointer">
+                <Youtube className="h-8 w-8 text-red-500 mr-2" />
+                <span className="text-xl font-bold">FeedSage</span>
+              </Link>
             </div>
             <form
               onSubmit={handleSearch}
@@ -115,12 +117,12 @@ export default function Component() {
               </div>
             </form>
             <div className="flex items-center">
-              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
+              {/* <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
                 <Bell className="h-6 w-6" />
               </Button>
               <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white ml-2">
                 <User className="h-6 w-6" />
-              </Button>
+              </Button> */}
               <Button
                 variant="ghost"
                 size="icon"

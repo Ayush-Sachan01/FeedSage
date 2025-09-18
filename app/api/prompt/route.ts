@@ -92,11 +92,24 @@ export async function POST(req: NextRequest) {
     
     const youtubeData  = await (youtubeResponse.json()) as YouTubeSearchResult;
 
-
     if (!youtubeData.items || youtubeData.items.length === 0) {
       return NextResponse.json({ message: "No videos found for the given prompt" }, { status: 404 });
     }
-
+    
+    // Extract video IDs from search results
+    const videoIds = youtubeData.items.map((item: YouTubeVideoItem) => item.id.videoId).join(",");
+    
+    // Fetch statistics (views)
+    const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${youtubeApiKey}`;
+    const statsResponse = await fetch(statsUrl);
+    const statsData = await statsResponse.json();
+    
+    // Build a map of videoId -> viewCount
+    const statsMap = new Map(
+      statsData.items.map((item: any) => [item.id, item.statistics.viewCount])
+    );
+    
+    // Merge search data + stats into allVideos
     const allVideos: YouTubeVideo[] = youtubeData.items.map((item: YouTubeVideoItem) => ({
       id: item.id.videoId,
       title: item.snippet.title,
@@ -105,7 +118,9 @@ export async function POST(req: NextRequest) {
       channelTitle: item.snippet.channelTitle,
       channelId: item.snippet.channelId,
       publishedAt: item.snippet.publishedAt,
+      views: statsMap.get(item.id.videoId) || "N/A",
     }));
+    
 
     const collection = db.collection("videos");
 

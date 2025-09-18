@@ -1,15 +1,25 @@
-"use client"
-import { useEffect, useState } from "react"
-import { useParams , useRouter } from "next/navigation"
-import axios from "axios"
-import { ThumbsUp, MessageCircle, Share2, Flag,ChevronDown, ChevronUp} from "lucide-react"
-import { SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import RecommendedVideos from "@/components/RecommendedVideos"
-
+"use client";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import axios from "axios";
+import {
+  ThumbsUp,
+  MessageCircle,
+  Share2,
+  Flag,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import { SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import RecommendedVideos from "@/components/RecommendedVideos";
 
 // Video and Comment interfaces
 interface Video {
@@ -21,40 +31,52 @@ interface Video {
   likes: string;
   videoUrl: string;
   thumbnailUrl: string;
-  publishedAt?: string; 
+  publishedAt?: string;
 }
 
 interface RecommendedVideo {
-  _id: string; 
+  _id: string;
   userId: string;
-  video: Video; 
-  createdAt: string; 
+  video: Video;
+  createdAt: string;
 }
 
 interface Comment {
-  id: string
-  user: string
-  text: string
-  likes: number
-  time: string
+  id: string;
+  user: string;
+  text: string;
+  likes: number;
+  time: string;
 }
 
-
 const comments: Comment[] = [
-  { id: '1', user: 'User1', text: 'Great video!', likes: 10, time: '2 days ago' },
-  { id: '2', user: 'User2', text: 'Very informative, thanks for sharing!', likes: 5, time: '1 day ago' },
-]
-
+  {
+    id: "1",
+    user: "User1",
+    text: "Great video!",
+    likes: 10,
+    time: "2 days ago",
+  },
+  {
+    id: "2",
+    user: "User2",
+    text: "Very informative, thanks for sharing!",
+    likes: 5,
+    time: "1 day ago",
+  },
+];
 
 export default function VideoPage() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const router = useRouter();
-  const { user, isLoaded, isSignedIn } = useUser(); 
+  const { user, isLoaded, isSignedIn } = useUser();
   const [video, setVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [recommendedVideos, setRecommendedVideos] = useState<RecommendedVideo[]>([]);
- 
+  const [isOpen, setIsOpen] = useState(true)
+  const [recommendedVideos, setRecommendedVideos] = useState<
+    RecommendedVideo[]
+  >([]);
 
   // Fetch the video details
   useEffect(() => {
@@ -82,18 +104,13 @@ export default function VideoPage() {
       if (!id || !isLoaded || !isSignedIn || !user?.id) return;
 
       try {
-
         const response = await axios.post("/api/recommendation", {
           videoId: id,
           userId: user.id,
-
         });
-
-       
 
         const fetchedVideos = response.data.results;
         setRecommendedVideos(fetchedVideos);
-        
       } catch (error) {
         console.error("Error fetching recommended videos:", error);
       }
@@ -101,8 +118,6 @@ export default function VideoPage() {
 
     fetchRecommendedVideos();
   }, [id, isLoaded, isSignedIn, user?.id]);
-
- 
 
   if (loading) {
     return (
@@ -133,70 +148,95 @@ export default function VideoPage() {
     <>
       <div className="bg-gray-900 mx-auto md:text-right text-center md:pt-8 md:pr-8 pb-4 pt-4">
         <Button
-                variant="outline"
-                className="bg-gray-800 text-gray-200 hover:bg-gray-700"
-                onClick={handleSearchRedirect}
-              >
-                Go to Search
+          variant="outline"
+          className="bg-gray-800 text-gray-200 hover:bg-gray-700"
+          onClick={handleSearchRedirect}
+        >
+          Go to Search
         </Button>
       </div>
-    <div className="min-h-screen bg-gray-900 text-gray-200 md:flex md:justify-center">
-      <div className="container mx-auto py-8 px-4 flex flex-col md:flex-row gap-6">
-        <div className="md:w-2/3">
-          <div className="mb-6">
-            <iframe
-              width="100%"
-              height="480"
-              src={`https://www.youtube.com/embed/${video.id}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="rounded-lg"
-            ></iframe>
-          </div>
-          <h1 className="text-2xl font-bold mb-2 text-gray-100">{video.title}</h1>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarFallback>{video.channelTitle[0]}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-semibold text-gray-100">{video.channelTitle}</p>
-                <p className="text-sm text-gray-400">{video.views} views</p>
+      <div className="min-h-screen bg-gray-900 text-gray-200 md:flex md:justify-center">
+        <div className="container mx-auto py-8 px-4 flex flex-col md:flex-row gap-6">
+          <div className="md:w-2/3">
+            <div className="mb-6">
+              <iframe
+                width="100%"
+                height="480"
+                src={`https://www.youtube.com/embed/${video.id}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="rounded-lg"
+              ></iframe>
+            </div>
+            <h1 className="text-2xl font-bold mb-2 text-gray-100">
+              {video.title}
+            </h1>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Avatar>
+                  <AvatarFallback>{video.channelTitle[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-semibold text-gray-100">
+                    {video.channelTitle}
+                  </p>
+                  <p className="text-sm text-gray-400">{video.views} views</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-gray-800 text-gray-200 hover:bg-gray-700"
+                >
+                  <ThumbsUp className="w-4 h-4 mr-2" />
+                  {video.likes}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-gray-800 text-gray-200 hover:bg-gray-700"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-gray-800 text-gray-200 hover:bg-gray-700"
+                >
+                  <Flag className="w-4 h-4 mr-2" />
+                  Report
+                </Button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="bg-gray-800 text-gray-200 hover:bg-gray-700">
-                <ThumbsUp className="w-4 h-4 mr-2" />
-                {video.likes}
-              </Button>
-              <Button variant="outline" size="sm" className="bg-gray-800 text-gray-200 hover:bg-gray-700">
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
-              </Button>
-              <Button variant="outline" size="sm" className="bg-gray-800 text-gray-200 hover:bg-gray-700">
-                <Flag className="w-4 h-4 mr-2" />
-                Report
-              </Button>
-            </div>
-          </div>
-          <Collapsible className="mb-6 bg-gray-800 p-4 rounded-lg">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-gray-100">Description</h3>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-gray-200 hover:bg-gray-700">
-                  {video.description ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </Button>
-              </CollapsibleTrigger>
-            </div>
-            <CollapsibleContent className="mt-2">
-              <p className="text-gray-300 whitespace-pre-wrap">{video.description}</p>
-            </CollapsibleContent>
-          </Collapsible>
-          <div className="mb-6">
+            <Collapsible
+              open={isOpen}
+              onOpenChange={setIsOpen}
+              className="mb-6 bg-gray-800 p-4 rounded-lg"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-100">
+                  Description
+                </h3>
+                <CollapsibleTrigger asChild>
+                  <button className="text-gray-200 hover:bg-gray-700 p-2 rounded">
+                    {isOpen ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </button>
+                </CollapsibleTrigger>
+              </div>
+              <CollapsibleContent className="mt-2">
+                <p className="text-gray-300 whitespace-pre-wrap">
+                  {video.description}
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* <div className="mb-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-100">Comments</h2>
             {comments.map((comment) => (
               <div key={comment.id} className="flex gap-4 mb-4">
@@ -222,17 +262,16 @@ export default function VideoPage() {
                 </div>
               </div>
             ))}
+          </div> */}
+          </div>
+          <div className="md:w-1/3">
+            <RecommendedVideos recommendedVideos={recommendedVideos} />
           </div>
         </div>
-        <div className="md:w-1/3">
-          <RecommendedVideos recommendedVideos={recommendedVideos} />
-        </div>
+        <SignedOut>
+          <RedirectToSignIn />
+        </SignedOut>
       </div>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-    </div>
     </>
   );
-  
 }
