@@ -14,4 +14,4 @@ The project is built using Next.js for the frontend and server-side logic, TypeS
 
 ## Live Demo
 
-You can try FeedSage live at: [https://feedsage.vercel.app](https://feedsage.vercel.app)
+You can try FeedSage live at: [http://feed-sage-six.vercel.app/](http://feed-sage-six.vercel.app/)
