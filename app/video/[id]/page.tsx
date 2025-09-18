@@ -40,14 +40,6 @@ interface RecommendedVideo {
   createdAt: string;
 }
 
-interface Comment {
-  id: string;
-  user: string;
-  text: string;
-  likes: number;
-  time: string;
-}
-
 export default function VideoPage() {
   const { id } = useParams();
   const router = useRouter();
